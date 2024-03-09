@@ -1,6 +1,6 @@
 # Use an official Python runtime as the parent image
 FROM python:3.11-bullseye
-RUN apt-get update && apt-get install -y \
+RUN apt-get update -o Acquire::http::No-Cache=True && apt-get install -y \
     ffmpeg \
     imagemagick \
     ghostscript \
@@ -21,6 +21,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install dependencies
+RUN pip --timeout=3600 install torch
 RUN pip install -r requirements.txt
 
 # Copy the local package directory content into the container at /app
